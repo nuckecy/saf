@@ -67,6 +67,44 @@
   <script src="https://d1tdp7z6w94jbb.cloudfront.net/js/jquery-3.3.1.min.js" type="text/javascript" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
   <script src="js/script.js" type="text/javascript"></script>
   <!-- [if lte IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/placeholders/3.0.2/placeholders.min.js"></script><![endif] -->
-  <script src="js/submit.js" type="text/javascript"></script>
+<script>
+$(document).ready(function() {
+    $('#feedbackform').submit(function(e){
+         // Prevent form submission
+         e.preventDefault();
+         formSubmit();
+    })
+    function formSubmit()
+    {
+       
+        // Get the form instance
+        var $form = $('#feedbackform');
+
+        // Use Ajax to submit form data
+        var url = 'https://script.google.com/macros/s/AKfycbwliFiF4_HbBt97lGU5YehIZL_jKjT4pW8nsAzjdHv1RJ3UAJw/exec';
+
+        // show the loading 
+        // $('#postForm').prepend($('<span>Congrats</span>').addClass('glyphicon glyphicon-refresh glyphicon-refresh-animate'));
+        var jqxhr = $.get(url, $form.serialize(), function(data) 
+        {
+            jqxhr.crossDomain = true;
+            // console.log("Success! Data: " + data.statusText);
+            document.getElementById('heading-2').style.display = 'none';
+            document.getElementById('text-block').style.display = 'none';
+            document.getElementById('feedbackform').style.display = 'none';
+            document.getElementById('heading-success').style.display = 'block';
+            document.getElementById('status').style.display = 'block';
+
+            $.get('functions/mail_redemption.php', function(data) 
+            {
+            console.log('Mail was sent');
+            });
+        })
+        .fail(function(data) {
+
+        });
+    };
+});
+</script>
 </body>
 </html>
